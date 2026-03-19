@@ -1,73 +1,125 @@
-# Welcome to your Lovable project
+# Supply Chain Management Dashboard
 
-## Project info
+A role-based supply chain management dashboard built with React, TypeScript, and Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/917d17ef-c394-4156-be73-553d7dcd9b95
+## Project Overview
 
-## How can I edit this code?
+This application provides a comprehensive supply chain management platform with real-time insights across inventory, warehousing, delivery, forecasting, and more. Access is controlled through role-based authentication, ensuring each user sees only the modules relevant to their responsibilities.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+### Authentication & Roles
+- Role-based login system with four user roles: **Admin**, **Warehouse Manager**, **Delivery Agent**, and **Store Manager**
+- Each role has access to a filtered set of navigation modules
+- Session persistence via local storage
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/917d17ef-c394-4156-be73-553d7dcd9b95) and start prompting.
+**Demo Credentials** (password for all: `password`):
+| Role | Email |
+|------|-------|
+| Admin | admin@supply.com |
+| Warehouse Manager | warehouse@supply.com |
+| Delivery Agent | delivery@supply.com |
+| Store Manager | store@supply.com |
 
-Changes made via Lovable will be committed automatically to this repo.
+### Modules
 
-**Use your preferred IDE**
+| Module | Description | Accessible By |
+|--------|-------------|---------------|
+| **Dashboard** | KPI metrics, order/revenue charts, warehouse performance, recent alerts | All roles |
+| **Inventory** | SKU-level stock tracking, reorder points, stock status | Admin, Warehouse, Store |
+| **Warehouse** | Warehouse load, capacity, and efficiency monitoring | Admin, Warehouse |
+| **Delivery** | Delivery tracking and route management | Admin, Delivery |
+| **Forecasting** | Demand predictions with confidence scores | Admin, Store |
+| **Trending** | Trend analysis and analytics | Admin, Store |
+| **Customers** | Customer data and insights | Admin, Store |
+| **Markdowns** | Markdown/pricing management | Admin, Store |
+| **Simulations** | Supply chain scenario simulations | Admin only |
+| **Alerts** | Real-time alerts (low stock, delivery delays, etc.) | All roles |
+| **Returns** | Returns processing and tracking | Admin, Warehouse |
+| **Training** | Zone-based training modules | Admin, Store |
+| **AI Co-Pilot** | AI-assisted supply chain assistant | All roles |
+| **Privacy** | Privacy and data management settings | Admin only |
+| **Preferences** | User preferences and settings | All roles |
+| **Profile** | User profile management | All roles |
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Application Flow
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. **Login** → User authenticates at `/login` with email and password
+2. **Role Detection** → System identifies user role and filters sidebar navigation
+3. **Dashboard** → User lands on the main dashboard with KPI cards and charts
+4. **Navigation** → Collapsible sidebar allows navigation between permitted modules
+5. **Data Layer** → API service layer (with mock data) powers all modules via React Query
 
-Follow these steps:
+## Tech Stack
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- **React 18** — UI framework
+- **TypeScript** — Type safety
+- **Vite** — Build tool and dev server
+- **Tailwind CSS** — Utility-first styling
+- **shadcn/ui** — Component library (Radix UI primitives)
+- **React Router v6** — Client-side routing
+- **React Query (TanStack)** — Server state management
+- **Recharts** — Data visualization / charts
+- **Axios** — HTTP client
+- **Lucide React** — Icon library
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Project Structure
 
-# Step 3: Install the necessary dependencies.
-npm i
+```
+src/
+├── components/        # Shared components (Layout, Sidebar, Header, MetricCard, DataTable)
+│   └── ui/            # shadcn/ui primitives
+├── hooks/             # Custom hooks (useAuth, useMobile, useToast)
+├── pages/             # Route-level page components
+├── services/          # API service layer with mock data
+├── lib/               # Utility functions
+└── main.tsx           # Application entry point
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <REPO_URL>
+
+# Navigate to project directory
+cd <PROJECT_NAME>
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:5173`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Build for Production
 
-**Use GitHub Codespaces**
+```bash
+npm run build
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Output will be in the `dist/` directory, ready for static hosting.
 
-## What technologies are used for this project?
+## API Layer
 
-This project is built with:
+The project uses a mock API service (`src/services/api.ts`) with intercepted Axios requests returning demo data. To connect to a real backend, replace the mock interceptors with actual API endpoints.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/917d17ef-c394-4156-be73-553d7dcd9b95) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Available endpoints:
+- `GET /api/inventory` — Inventory items with stock levels
+- `GET /api/warehouses` — Warehouse load and efficiency data
+- `GET /api/demand` — Demand heatmap data by zip code
+- `GET /api/forecast` — Demand forecast predictions
+- `GET /api/markdowns` — Markdown pricing data
+- `GET /api/customers` — Customer analytics
+- `GET /api/returns` — Returns data
+- `GET /api/simulate` — Simulation results
+- `GET /api/alerts` — System alerts
+- `GET /api/training/:zone` — Training content by zone
